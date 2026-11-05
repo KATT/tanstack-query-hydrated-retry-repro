@@ -6,7 +6,7 @@ import {
   hydrate,
 } from '@tanstack/query-core'
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
 const queryKey = ['post', 1]
 
 // 🖥️ Server: the query is still pending at dehydrate, and rejects later
@@ -44,7 +44,7 @@ const observer = new QueryObserver(browserClient, {
 observer.subscribe(() => {})
 
 await sleep(500)
-const { status, data, error } = browserClient.getQueryState(queryKey)
+const { status, data, error } = browserClient.getQueryState(queryKey)!
 console.log({ status, data, error: error?.message })
 // ✅ Expected: { status: 'success', data: 'data from the browser', error: undefined }
 // 🐛 Actual on 5.106.0: { status: 'error', data: undefined, error: 'redacted' }
